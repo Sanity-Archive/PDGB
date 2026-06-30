@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from pathlib import Path
 
 from PyQt6.QtCore import QUrl, Qt, QStandardPaths
@@ -7,6 +7,8 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage
 from PyQt6.QtGui import QShortcut, QKeySequence
 
+
+os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--ignore-gpu-blocklist"
 
 APP_NAME = "PDGBrowser"
 
