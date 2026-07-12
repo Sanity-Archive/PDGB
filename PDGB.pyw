@@ -1,16 +1,16 @@
-import sys, os
+import sys
 from pathlib import Path
 
-from PyQt6.QtCore import QUrl, Qt, QStandardPaths
+from PyQt6.QtCore import QUrl, Qt, QStandardPaths, qVersion
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QSplitter
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage
+from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage, QWebEngineSettings
 from PyQt6.QtGui import QShortcut, QKeySequence
 
 
-os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--ignore-gpu-blocklist"
-
 APP_NAME = "PDGBrowser"
+
+
 
 class MainWindow(QWidget):
     def closeEvent(self, event):
@@ -25,6 +25,7 @@ class MainWindow(QWidget):
 app = QApplication(sys.argv)
 app.setApplicationName(APP_NAME)
 app.setQuitOnLastWindowClosed(True)
+
 
 window = MainWindow()
 layout = QVBoxLayout(window)
@@ -67,18 +68,33 @@ def create_browser(panel_name: str, url: str, parent=None) -> QWebEngineView:
     return view
 
 def toggleFS():
-    if window.isFullScreen():
-        window.showNormal()
-    else:
-        window.showFullScreen()
+     if window.isFullScreen():
+         window.showNormal()
+     else:
+         window.showFullScreen()
+
+def reload_activePanel():
+    focused_widget = QApplication.focusWidget()
+
+    if focused_widget is None:
+        return
+    
+    if ( focused_widget is left or left.isAncestorOf(focused_widget)):
+        left.reload()
+    elif (focused_widget is right or right.isAncestorOf(focused_widget)):
+        right.reload()
 
 
-shortcut = QShortcut(QKeySequence("F11"), window)
+shortcut = QShortcut(QKeySequence("CTRL+Ü"), window)
 shortcut.activated.connect(toggleFS)
+
+reload_shortcut = QShortcut(QKeySequence("CTRL+P"), window)
+reload_shortcut.activated.connect(reload_activePanel)
+
 
 splitter = QSplitter(Qt.Orientation.Horizontal)
 
-
+# print("QT:", qVersion())
 left = create_browser("left_panel", "https://universe.flyff.com/play")
 right = create_browser("right_panel", "https://universe.flyff.com/play")
 
