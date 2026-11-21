@@ -144,6 +144,11 @@ else:
     layout.addWidget(left)
 
 
+# Programm immer auf Monitor 1 starten
+screens = QApplication.screens()
+screen = screens[0]
+
+window.setGeometry(screen.geometry())
 window.showFullScreen()
 
 sys.exit(app.exec())
